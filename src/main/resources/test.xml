@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--    1. 默认是单例模式 scope="prototype" 就是原型模式 非单例,每次会新建一个对象 lazy-init="" 是懒汉模式 -->
+    <!--    2. prototype bean的声明周期与容器无关,而默认singleton的bean声明周期与容器相关,也就是容器关闭,bean被销毁-->
+    <!--    3. 可以为bean 添加init 在每次创造一个新bean时被调用  destroy方法,在context销毁时被调用(singleton下)  -->
+    <!--    4. 依赖注入 必须有set方法 ,可以是其他类的对象,可以是list-->
+
+    <bean name ="aopTest" class="com.spring_notebook.aop.AOPTest"/>
+    <bean name="card" class="com.spring_notebook.bean.Card"/>
+    <bean name="student" class="com.spring_notebook.bean.Student"   init-method="init" destroy-method="destroy" autowire="byType" >
+        <property name="name" value="Clement"/>
+        <property name="list">
+            <list>
+                <value type="double">100</value>
+                <value type="double">89</value>
+                <value type="double">10</value>
+            </list>
+        </property>
+        <property name="map">
+            <map>
+                <entry key="Math" value="100"/>
+                <entry key="Chinese" value="16"/>
+                <entry key="English" value="45"/>
+            </map>
+        </property>
+    </bean>
+
+    <!--    5. AOP 的使用
+            a.注册切入方法所在类为bean
+            b.-->
+    <aop:config>
+        <aop:pointcut id="test" expression="execution(public  com.spring_notebook.bean.Student.)"/>
+    </aop:config>
+
+</beans>
