@@ -8,7 +8,7 @@
     <!--    2. prototype bean的声明周期与容器无关,而默认singleton的bean声明周期与容器相关,也就是容器关闭,bean被销毁-->
     <!--    3. 可以为bean 添加init 在每次创造一个新bean时被调用  destroy方法,在context销毁时被调用(singleton下)  -->
     <!--    4. 依赖注入 必须有set方法 ,可以是其他类的对象,可以是list-->
-
+    <bean name="aopInterface" class="com.spring_notebook.aop.AOPInterface"/>
     <bean name ="aopTest" class="com.spring_notebook.aop.AOPTest"/>
     <bean name="card" class="com.spring_notebook.bean.Card"/>
     <bean name="student" class="com.spring_notebook.bean.Student"   init-method="init" destroy-method="destroy" autowire="byType" >
@@ -30,10 +30,22 @@
     </bean>
 
     <!--    5. AOP 的使用
-            a.注册切入方法所在类为bean
-            b.-->
+            a.注册切面类为bean
+            b.使用aop:aspect直接定义切面
+            c.定义切入点
+            d. 定义切入的连接点,before,after...-->
     <aop:config>
-        <aop:pointcut id="test" expression="execution(public  com.spring_notebook.bean.Student.)"/>
+        <aop:pointcut id="test" expression="execution(public int com.spring_notebook.bean.Student.AOPTest(String))"/>
+<!--        <aop:aspect ref="aopTest">-->
+<!--            <aop:before method="before" pointcut-ref="test"/>-->
+<!--            <aop:after method="after" pointcut-ref="test"/>-->
+<!--            <aop:around method="around" pointcut-ref="test"/>-->
+<!--        </aop:aspect>-->
+    <!--    6.AOP接口的使用
+            a.注册切面类为bean
+            b.定义切入点
+            c. 使用aop:advisor 定义通知-->
+        <aop:advisor advice-ref="aopInterface" pointcut-ref="test"/>
     </aop:config>
 
 </beans>
